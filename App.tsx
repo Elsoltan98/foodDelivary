@@ -1,15 +1,18 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import {Resturant, Home, OrderDelivary} from './screens/index';
+import {Resturant, OrderDelivary} from './screens/index';
+import Tabs from './navigation/tabs';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
+      <Stack.Navigator
+        screenOptions={{headerShown: false}}
+        initialRouteName="Home">
+        <Stack.Screen name="Home" component={Tabs} />
         <Stack.Screen name="Resturant" component={Resturant} />
         <Stack.Screen name="OrderDelivary" component={OrderDelivary} />
       </Stack.Navigator>
