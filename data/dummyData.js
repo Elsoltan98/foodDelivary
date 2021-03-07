@@ -2,7 +2,7 @@ import {icons, images} from './../constants';
 // Dummy Datas
 
 const initialCurrentLocation = {
-  streetName: 'Kuching',
+  streetName: 'Cairo',
   gps: {
     latitude: 1.5496614931250685,
     longitude: 110.36381866919922,
