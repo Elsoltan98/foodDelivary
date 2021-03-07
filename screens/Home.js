@@ -16,7 +16,7 @@ import {
   initialCurrentLocation,
 } from './../data/dummyData';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const [categories, setCategories] = React.useState(categoryData);
   const [selectedCategory, setSelectedCategory] = React.useState(
     categoryData[0],
@@ -152,7 +152,14 @@ const Home = () => {
 
   const renderResturants = () => {
     const renderItem = ({item}) => (
-      <TouchableOpacity style={{marginBottom: SIZES.padding * 2}}>
+      <TouchableOpacity
+        style={{marginBottom: SIZES.padding * 2}}
+        onPress={() =>
+          navigation.navigate('Resturant', {
+            item,
+            currentLocation,
+          })
+        }>
         <View style={{marginBottom: SIZES.padding}}>
           {/** Image */}
           <Image
@@ -212,6 +219,21 @@ const Home = () => {
                 </View>
               );
             })}
+
+            {/** Price */}
+            {[1, 2, 3].map((priceRating) => (
+              <Text
+                key={priceRating}
+                style={{
+                  ...FONTS.body3,
+                  color:
+                    priceRating <= item.priceRating
+                      ? COLORS.black
+                      : COLORS.darkgray,
+                }}>
+                $
+              </Text>
+            ))}
           </View>
         </View>
       </TouchableOpacity>
