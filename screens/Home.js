@@ -9,8 +9,20 @@ import {
 } from 'react-native';
 
 import {COLORS, FONTS, icons, SIZES} from '../constants';
+import {
+  categoryData,
+  restaurantData,
+  initialCurrentLocation,
+} from './../data/dummyData';
 
 const Home = () => {
+  const [categories, setCategories] = React.useState(categoryData);
+  const [selectedCategory, setSelectedCategory] = React.useState(null);
+  const [restaurants, setRestaurants] = React.useState(restaurantData);
+  const [currentLocation, setCurrentLocation] = React.useState(
+    initialCurrentLocation,
+  );
+
   const renderHeader = () => {
     return (
       <View style={{flexDirection: 'row', height: 50}}>
@@ -36,7 +48,7 @@ const Home = () => {
               justifyContent: 'center',
               borderRadius: SIZES.radius,
             }}>
-            <Text style={{...FONTS.h3}}>Location</Text>
+            <Text style={{...FONTS.h3}}>{currentLocation.streetName}</Text>
           </View>
         </View>
         <TouchableOpacity
@@ -55,14 +67,28 @@ const Home = () => {
     );
   };
 
-  return <SafeAreaView style={styles.container}>{renderHeader()}</SafeAreaView>;
+  const renderMainCategories = () => {
+    return (
+      <View style={{padding: SIZES.padding * 2}}>
+        <Text style={{...FONTS.h1}}>Main</Text>
+        <Text style={{...FONTS.h1}}>Categories</Text>
+      </View>
+    );
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {renderHeader()}
+      {renderMainCategories()}
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.lightGray4,
-    marginTop: 10,
+    paddingTop: 10,
   },
   shadow: {
     shadowColor: '#000',
