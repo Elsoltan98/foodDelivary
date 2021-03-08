@@ -220,7 +220,57 @@ const Resturant = ({route, navigation}) => {
   };
 
   const renderOrder = () => {
-    return <View>{renderDots()}</View>;
+    return (
+      <View>
+        {renderDots()}
+        <View
+          style={{
+            backgroundColor: COLORS.white,
+            borderTopRightRadius: 40,
+            borderTopLeftRadius: 40,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingVertical: SIZES.padding * 2,
+              paddingHorizontal: SIZES.padding * 3,
+              borderBottomColor: COLORS.lightGray2,
+              borderBottomWidth: 1,
+            }}>
+            <Text style={{...FONTS.h3}}>Items in cart: </Text>
+            <Text style={{...FONTS.h3}}>$45</Text>
+          </View>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingVertical: SIZES.padding * 2,
+              paddingHorizontal: SIZES.padding * 3,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <Image
+                source={icons.pin}
+                resizeMode="contain"
+                style={{width: 20, height: 20, tintColor: COLORS.darkgray}}
+              />
+              <Text style={{marginLeft: SIZES.padding, ...FONTS.h4}}>
+                Location
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <Image
+                source={icons.master_card}
+                resizeMode="contain"
+                style={{width: 20, height: 20, tintColor: COLORS.darkgray}}
+              />
+              <Text style={{marginLeft: SIZES.padding, ...FONTS.h4}}>8888</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
   };
 
   // Check if resturants && current location
