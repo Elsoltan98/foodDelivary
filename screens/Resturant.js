@@ -6,22 +6,24 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Animated,
+  ActivityIndicator,
 } from 'react-native';
 import {COLORS, FONTS, icons, SIZES} from '../constants';
 
 const Resturant = ({route, navigation}) => {
-  const [resturant, setResturant] = React.useState(null);
+  const [resturants, setResturants] = React.useState(null);
   const [currentLoctaion, setCurrentLocation] = React.useState(null);
 
   React.useEffect(() => {
     let {item, currentLoctaion} = route.params;
     setCurrentLocation(currentLoctaion);
-    setResturant(item);
+    setResturants(item);
   }, [route.params]);
 
   const renderHeader = () => {
     return (
-      <View style={{flexDirection: 'row', paddingTop: 10}}>
+      <View style={{flexDirection: 'row', paddingVertical: 10}}>
         <TouchableOpacity
           style={{
             width: 50,
@@ -42,7 +44,7 @@ const Resturant = ({route, navigation}) => {
               borderRadius: SIZES.radius,
               backgroundColor: COLORS.lightGray3,
             }}>
-            <Text style={{...FONTS.h3}}>{resturant.name}</Text>
+            <Text style={{...FONTS.h3}}>{resturants.name}</Text>
           </View>
         </View>
 
@@ -59,7 +61,92 @@ const Resturant = ({route, navigation}) => {
     );
   };
 
-  return <SafeAreaView style={styles.container}>{renderHeader()}</SafeAreaView>;
+  const renderFoodInfo = () => {
+    return (
+      <Animated.ScrollView
+        horizontal
+        pagingEnabled
+        scrollEventThrottle={16}
+        snapToAlignment="center"
+        showsHorizontalScrollIndicator={false}
+        //scroll
+      >
+        {resturants.menu.map((item, index) => (
+          <View key={`menu-${index}`} style={{alignItems: 'center'}}>
+            <View style={{height: SIZES.height * 0.35}}>
+              {/** Images */}
+              <Image
+                source={item.photo}
+                resizeMode="cover"
+                style={{width: SIZES.width, height: '100%'}}
+              />
+              {/** Quantity */}
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -25,
+                  width: SIZES.width,
+                  height: 50,
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                }}>
+                <TouchableOpacity
+                  style={{
+                    width: 50,
+                    backgroundColor: COLORS.white,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderTopLeftRadius: 25,
+                    borderBottomLeftRadius: 25,
+                  }}>
+                  <Text style={{...FONTS.body1}}>-</Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    width: 50,
+                    backgroundColor: COLORS.white,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text style={{...FONTS.h2}}>5</Text>
+                </View>
+                <TouchableOpacity
+                  style={{
+                    width: 50,
+                    backgroundColor: COLORS.white,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderTopRightRadius: 25,
+                    borderBottomRightRadius: 25,
+                  }}>
+                  <Text style={{...FONTS.body1}}>+</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        ))}
+      </Animated.ScrollView>
+    );
+  };
+
+  // Check if resturants && current location
+
+  if (!resturants && !currentLoctaion) {
+    return (
+      <ActivityIndicator
+        size="large"
+        color={COLORS.primary}
+        style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+      />
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {renderHeader()}
+      {renderFoodInfo()}
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
