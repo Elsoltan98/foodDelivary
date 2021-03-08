@@ -12,6 +12,7 @@ import {
 import {COLORS, FONTS, icons, SIZES} from '../constants';
 
 const Resturant = ({route, navigation}) => {
+  const scrollX = new Animated.Value(0);
   const [resturants, setResturants] = React.useState(null);
   const [currentLoctaion, setCurrentLocation] = React.useState(null);
 
@@ -69,8 +70,10 @@ const Resturant = ({route, navigation}) => {
         scrollEventThrottle={16}
         snapToAlignment="center"
         showsHorizontalScrollIndicator={false}
-        //scroll
-      >
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver: false},
+        )}>
         {resturants.menu.map((item, index) => (
           <View key={`menu-${index}`} style={{alignItems: 'center'}}>
             <View style={{height: SIZES.height * 0.35}}>
@@ -168,6 +171,58 @@ const Resturant = ({route, navigation}) => {
     );
   };
 
+  const renderDots = () => {
+    const dotPostion = Animated.divide(scrollX, SIZES.width);
+    return (
+      <View style={{height: 30}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: SIZES.padding,
+          }}>
+          {resturants.menu.map((item, index) => {
+            const opacity = dotPostion.interpolate({
+              inputRange: [index - 1, index, index + 1],
+              outputRange: [0.3, 1, 0.3],
+              extrapolate: 'clamp',
+            });
+
+            const dotSize = dotPostion.interpolate({
+              inputRange: [index - 1, index, index + 1],
+              outputRange: [SIZES.base * 0.8, 10, SIZES.base * 0.8],
+              extrapolate: 'clamp',
+            });
+
+            const dotColor = dotPostion.interpolate({
+              inputRange: [index - 1, index, index + 1],
+              outputRange: [COLORS.darkgray, COLORS.primary, COLORS.darkgray],
+              extrapolate: 'clamp',
+            });
+            return (
+              <Animated.View
+                key={`dot-${index}`}
+                opacity={opacity}
+                style={{
+                  borderRadius: SIZES.radius,
+                  marginHorizontal: 6,
+                  width: dotSize,
+                  height: dotSize,
+                  backgroundColor: dotColor,
+                }}
+              />
+            );
+          })}
+        </View>
+      </View>
+    );
+  };
+
+  const renderOrder = () => {
+    return <View>{renderDots()}</View>;
+  };
+
   // Check if resturants && current location
 
   if (!resturants && !currentLoctaion) {
@@ -184,6 +239,7 @@ const Resturant = ({route, navigation}) => {
     <SafeAreaView style={styles.container}>
       {renderHeader()}
       {renderFoodInfo()}
+      {renderOrder()}
     </SafeAreaView>
   );
 };
