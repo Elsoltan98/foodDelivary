@@ -9,18 +9,51 @@ import {
   Animated,
   ActivityIndicator,
 } from 'react-native';
+import {isIphoneX} from 'react-native-iphone-x-helper';
 import {COLORS, FONTS, icons, SIZES} from '../constants';
 
 const Resturant = ({route, navigation}) => {
   const scrollX = new Animated.Value(0);
   const [resturants, setResturants] = React.useState(null);
   const [currentLoctaion, setCurrentLocation] = React.useState(null);
+  const [orderItems, setOrderItems] = React.useState([]);
 
   React.useEffect(() => {
     let {item, currentLoctaion} = route.params;
     setCurrentLocation(currentLoctaion);
     setResturants(item);
   }, [route.params]);
+
+  const editOrder = (action, menuId, price) => {
+    if (action === '+') {
+      let orderList = orderItems.slice();
+      let item = orderList.filter((a) => a.menuId === menuId);
+
+      if (item.length > 0) {
+        let newQty = item[0].qty + 1;
+        item[0].qty = newQty;
+        item[0].total = item[0].qty * price;
+      } else {
+        const newItem = {
+          menuId,
+          qty: 1,
+          price,
+          total: price,
+        };
+        orderList.push(newItem);
+      }
+      setOrderItems(orderList);
+    } else {
+    }
+  };
+
+  const getOrderQty = (menuId) => {
+    let orderItem = orderItems.filter((a) => a.menuId === menuId);
+    if (orderItem.length > 0) {
+      return orderItem[0].qty;
+    }
+    return 0;
+  };
 
   const renderHeader = () => {
     return (
@@ -111,7 +144,7 @@ const Resturant = ({route, navigation}) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <Text style={{...FONTS.h2}}>5</Text>
+                  <Text style={{...FONTS.h2}}>{getOrderQty(item.menuId)}</Text>
                 </View>
                 <TouchableOpacity
                   style={{
@@ -121,7 +154,8 @@ const Resturant = ({route, navigation}) => {
                     justifyContent: 'center',
                     borderTopRightRadius: 25,
                     borderBottomRightRadius: 25,
-                  }}>
+                  }}
+                  onPress={() => editOrder('+', item.menuId, item.price)}>
                   <Text style={{...FONTS.body1}}>+</Text>
                 </TouchableOpacity>
               </View>
@@ -287,6 +321,17 @@ const Resturant = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
+        {isIphoneX() && (
+          <View
+            style={{
+              position: 'absolute',
+              bottom: -34,
+              left: 0,
+              right: 0,
+              height: 34,
+              backgroundColor: COLORS.white,
+            }}></View>
+        )}
       </View>
     );
   };
