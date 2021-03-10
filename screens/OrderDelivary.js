@@ -2,11 +2,11 @@ import React from 'react';
 import {View, Text} from 'react-native';
 
 const OrederDelivary = () => {
-  return (
-    <View>
-      <Text>Oreder Delivary Page</Text>
-    </View>
-  );
+  const renderMap = () => {
+    return <View></View>;
+  };
+
+  return <View style={{flex: 1}}>{renderMap()}</View>;
 };
 
 export default OrederDelivary;
