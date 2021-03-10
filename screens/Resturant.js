@@ -266,6 +266,12 @@ const Resturant = ({route, navigation}) => {
     return itemCount;
   };
 
+  const sumOrder = () => {
+    let total = orderItems.reduce((a, b) => a + (b.total || 0), 0);
+
+    return total.toFixed(2);
+  };
+
   const renderOrder = () => {
     return (
       <View>
@@ -288,7 +294,7 @@ const Resturant = ({route, navigation}) => {
             <Text style={{...FONTS.h3}}>
               {getBasketItemCount()} Items in cart:{' '}
             </Text>
-            <Text style={{...FONTS.h3}}>$45</Text>
+            <Text style={{...FONTS.h3}}>${sumOrder()}</Text>
           </View>
 
           <View
@@ -331,7 +337,13 @@ const Resturant = ({route, navigation}) => {
                 backgroundColor: COLORS.primary,
                 alignItems: 'center',
                 borderRadius: SIZES.radius,
-              }}>
+              }}
+              onPress={() =>
+                navigation.navigate('OrderDelivary', {
+                  resturants,
+                  currentLoctaion,
+                })
+              }>
               <Text style={{color: COLORS.white, ...FONTS.h2}}>Order</Text>
             </TouchableOpacity>
           </View>
