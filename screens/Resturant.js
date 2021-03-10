@@ -261,6 +261,11 @@ const Resturant = ({route, navigation}) => {
     );
   };
 
+  const getBasketItemCount = () => {
+    let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0);
+    return itemCount;
+  };
+
   const renderOrder = () => {
     return (
       <View>
@@ -280,7 +285,9 @@ const Resturant = ({route, navigation}) => {
               borderBottomColor: COLORS.lightGray2,
               borderBottomWidth: 1,
             }}>
-            <Text style={{...FONTS.h3}}>Items in cart: </Text>
+            <Text style={{...FONTS.h3}}>
+              {getBasketItemCount()} Items in cart:{' '}
+            </Text>
             <Text style={{...FONTS.h3}}>$45</Text>
           </View>
 
@@ -319,7 +326,7 @@ const Resturant = ({route, navigation}) => {
             }}>
             <TouchableOpacity
               style={{
-                width: SIZES.padding * 0.9,
+                width: SIZES.width * 0.9,
                 padding: SIZES.padding,
                 backgroundColor: COLORS.primary,
                 alignItems: 'center',
@@ -329,17 +336,6 @@ const Resturant = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        {isIphoneX() && (
-          <View
-            style={{
-              position: 'absolute',
-              bottom: -34,
-              left: 0,
-              right: 0,
-              height: 34,
-              backgroundColor: COLORS.white,
-            }}></View>
-        )}
       </View>
     );
   };
