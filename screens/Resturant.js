@@ -15,12 +15,12 @@ import {COLORS, FONTS, icons, SIZES} from '../constants';
 const Resturant = ({route, navigation}) => {
   const scrollX = new Animated.Value(0);
   const [resturants, setResturants] = React.useState(null);
-  const [currentLoctaion, setCurrentLocation] = React.useState(null);
+  const [currentLocation, setCurrentLocation] = React.useState(null);
   const [orderItems, setOrderItems] = React.useState([]);
 
   React.useEffect(() => {
-    let {item, currentLoctaion} = route.params;
-    setCurrentLocation(currentLoctaion);
+    let {item, currentLocation} = route.params;
+    setCurrentLocation(currentLocation);
     setResturants(item);
   }, [route.params]);
 
@@ -341,7 +341,7 @@ const Resturant = ({route, navigation}) => {
               onPress={() =>
                 navigation.navigate('OrderDelivary', {
                   resturants,
-                  currentLoctaion,
+                  currentLocation,
                 })
               }>
               <Text style={{color: COLORS.white, ...FONTS.h2}}>Order</Text>
@@ -354,7 +354,7 @@ const Resturant = ({route, navigation}) => {
 
   // Check if resturants && current location
 
-  if (!resturants && !currentLoctaion) {
+  if (!resturants && !currentLocation) {
     return (
       <ActivityIndicator
         size="large"
