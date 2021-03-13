@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, ActivityIndicator} from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {COLORS, icons} from '../constants';
+import {COLORS, GOOGLE_API_KEY, icons} from '../constants';
+import MapViewDirections from 'react-native-maps-directions';
 
 const OrederDelivary = ({route, navigation}) => {
   const [resturants, setResturants] = React.useState(null);
@@ -71,12 +72,30 @@ const OrederDelivary = ({route, navigation}) => {
           style={{flex: 1}}
           provider={PROVIDER_GOOGLE}
           initialRegion={region}>
+          <MapViewDirections
+            origin={fromLocation}
+            destination={toLocation}
+            apikey={GOOGLE_API_KEY}
+            strokeWidth={5}
+            strokeColor={COLORS.primary}
+            optimizeWaypoints={true}
+          />
           {destinationMarker()}
           {carIcon()}
         </MapView>
       </View>
     );
   };
+
+  if (!resturants || !toLocation || !fromLocation) {
+    return (
+      <ActivityIndicator
+        color={COLORS.primary}
+        size="large"
+        style={{flex: 1}}
+      />
+    );
+  }
 
   return <View style={{flex: 1}}>{renderMap()}</View>;
 };
