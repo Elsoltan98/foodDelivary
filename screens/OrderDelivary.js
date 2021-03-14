@@ -10,6 +10,9 @@ const OrederDelivary = ({route, navigation}) => {
   const [fromLocation, setFromLocation] = React.useState(null);
   const [toLocation, setToLocation] = React.useState(null);
   const [region, setRegion] = React.useState(null);
+  const [duration, setDuration] = React.useState(0);
+  const [isReady, setIsReady] = React.useState(false);
+  const [angle, setAngle] = React.useState(0);
 
   React.useEffect(() => {
     let {resturants, currentLocation} = route.params;
@@ -79,6 +82,9 @@ const OrederDelivary = ({route, navigation}) => {
             strokeWidth={5}
             strokeColor={COLORS.primary}
             optimizeWaypoints={true}
+            onReady={(result) => {
+              setDuration(result.duration);
+            }}
           />
           {destinationMarker()}
           {carIcon()}
